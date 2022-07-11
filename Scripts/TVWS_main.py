@@ -16,10 +16,9 @@ import TVWS_tablegraph
 countCalcs, totalCalcs, avgCalcs = {}, {}, {}
 # Global specification values that are inputted or selected by user to run program
 InputDirectory, OutputDirectory = None, None
+fieldFilter, weatherFilter = [], []
 dateFilter1, dateFilter2 = "", ""
-weatherFilter = []
-displayFilter = ""
-fieldFilter = []
+displayFilter, cpe_id = "", ""
 index, index2 = 0, 0
 
 
@@ -71,6 +70,27 @@ def set_displayFilter(disfilter):
             displayFilter = displayFilter + disfilter
             print("Display filter added. ")
         else: print("Field: ", disfilter, " not a valid field, or not supported.")
+
+
+def set_clientFilter(client):
+    global cpe_id
+
+    if client == "clear":
+        check = input("Are you sure? This will reset saved calculations. ")
+        if check.lower() == "yes":
+            weatherFilter.clear()
+            countCalcs.clear()
+            totalCalcs.clear()
+            avgCalcs.clear()
+            cpe_id = ""
+            print("Client filter removed. ")
+    else:
+        if client in TVWS_main_filters.clientFilters:
+            if "ip.src" in fieldFilter:
+                cpe_id = client
+                print("Client filter added")
+            else: print("IP address not added to fields. ")
+        else: print("Invalid CPE ID.")
 
 
 # Function to set weather conditions to be used when processing .pcap files or calculating data points via processed .csv files
@@ -223,6 +243,7 @@ def settings():
                     elif choiceList[1] == "display": set_displayFilter(choiceList[0])
                     elif choiceList[1] == "weather": set_weatherFilter(choiceList[0], choiceList[0])
                     elif choiceList[1] == "date": set_dateFilter(choiceList[0])
+                    elif choiceList[1] == "client": set_clientFilter(choiceList[0])
                     else: print("Invalid input. ")
                 else: print("Need additional argument - input to clear. ")
 
@@ -235,6 +256,7 @@ def settings():
                 elif len(choiceList) == 3 and choiceList[1] == "display": set_displayFilter(choiceList[2])
                 elif len(choiceList) == 4 and choiceList[1] == "weather": set_weatherFilter(choiceList[2], choiceList[3])
                 elif len(choiceList) == 3 and choiceList[1] == "date": set_dateFilter(choiceList[2])
+                elif len(choiceList) == 3 and choiceList[1] == "client": set_clientFilter(choiceList[2])
                 else: print("Invalid filter command. Enter in the form: 'filter <filter type> <filter value>' ")
 
             elif choiceList[0] == "exit": loop = False
@@ -350,13 +372,13 @@ def tools():
                             else:
                                 if filt in TVWS_main_filters.tcpflowFilters: count = \
                                     TVWS_tools1.calc("count", filt, fieldFilter, codeOrService, InputDirectory, 1,
-                                                     dateFilter1, dateFilter2, weatherFilter)
+                                                     dateFilter1, dateFilter2, weatherFilter, cpe_id)
                                 elif filt in TVWS_main_filters.udpflowFilters: count = \
                                     TVWS_tools1.calc("count", filt, fieldFilter, codeOrService, InputDirectory, 2,
-                                                     dateFilter1, dateFilter2, weatherFilter)
+                                                     dateFilter1, dateFilter2, weatherFilter, cpe_id)
                                 else: count = \
                                     TVWS_tools1.calc("count", filt, fieldFilter, codeOrService, InputDirectory, 0,
-                                                     dateFilter1, dateFilter2, weatherFilter)
+                                                     dateFilter1, dateFilter2, weatherFilter, cpe_id)
                                 countCalcs[filt] = count
                                 print("COUNT: ", count)
 
@@ -365,13 +387,13 @@ def tools():
                             else:
                                 if filt in TVWS_main_filters.tcpflowFilters: total = \
                                     TVWS_tools1.calc("total", filt, fieldFilter, codeOrService, InputDirectory, 1,
-                                                     dateFilter1, dateFilter2, weatherFilter)
+                                                     dateFilter1, dateFilter2, weatherFilter, cpe_id)
                                 elif filt in TVWS_main_filters.udpflowFilters: total = \
                                     TVWS_tools1.calc("total", filt, fieldFilter, codeOrService, InputDirectory, 2,
-                                                     dateFilter1, dateFilter2, weatherFilter)
+                                                     dateFilter1, dateFilter2, weatherFilter, cpe_id)
                                 else: total = \
                                     TVWS_tools1.calc("total", filt, fieldFilter, codeOrService, InputDirectory, 0,
-                                                     dateFilter1, dateFilter2, weatherFilter)
+                                                     dateFilter1, dateFilter2, weatherFilter, cpe_id)
                                 totalCalcs[filt] = total
                                 print("TOTAL: ", total)
 
@@ -380,13 +402,13 @@ def tools():
                             else:
                                 if filt in TVWS_main_filters.tcpflowFilters: avg = \
                                     TVWS_tools1.calc("avg", filt, fieldFilter, codeOrService, InputDirectory, 1,
-                                                     dateFilter1, dateFilter2, weatherFilter)
+                                                     dateFilter1, dateFilter2, weatherFilter, cpe_id)
                                 elif filt in TVWS_main_filters.udpflowFilters: avg = \
                                     TVWS_tools1.calc("avg", filt, fieldFilter, codeOrService, InputDirectory, 2,
-                                                     dateFilter1, dateFilter2, weatherFilter)
+                                                     dateFilter1, dateFilter2, weatherFilter, cpe_id)
                                 else: avg = \
                                     TVWS_tools1.calc("avg", filt, fieldFilter, codeOrService, InputDirectory, 0,
-                                                     dateFilter1, dateFilter2, weatherFilter)
+                                                     dateFilter1, dateFilter2, weatherFilter, cpe_id)
                                 avgCalcs[filt] = avg
                                 print("AVERAGE: ", avg)
 
