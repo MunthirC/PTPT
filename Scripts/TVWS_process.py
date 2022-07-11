@@ -88,7 +88,7 @@ def process_flows(proto, InputDirectory, OutputDirectory, filter3, filter4, weat
                 if (weatherFilt is True and file in weatherFilter) or weatherFilt is False:
                     filename2 = os.path.splitext(file)[0] + '.csv'
                     with open(OutputDirectory + "/" + filename2, "w") as outfile:
-                        if proto == 1: command = ["tshark", "-r", os.path.join(InputDirectory, file), "-N", "m", "-q", "-z", "conv,tcp"]
+                        if proto == 1: command = ["tshark", "-r", os.path.join(InputDirectory, file), "-N", "m", "-q", "-z", "conv,tcp[,eth]"]
                         else: command = ["tshark", "-r", os.path.join(InputDirectory, file), "-N", "m", "-q", "-z", "conv,udp"]
                         try:
                             # Run Tshark command to obtain all TCP/UDP conversations within a .pcap file and output into .conv format
@@ -105,7 +105,7 @@ def process_flows(proto, InputDirectory, OutputDirectory, filter3, filter4, weat
     else: end = "_udpflowtemp.csv"
     for file in os.listdir(OutputDirectory):
         i = 1
-        if file.endswith(".csv"):
+        if file.endswith(".csv") and file != "TimestampsDuctingAndIcePeriod.csv":
             file2 = os.path.splitext(file)[0] + end
             with open(os.path.join(OutputDirectory, file)) as infile, open(OutputDirectory + "/" + file2, "w") as outfile:
                 csv_reader = csv.reader(infile, delimiter=',')
