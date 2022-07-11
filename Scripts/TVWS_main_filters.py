@@ -21,6 +21,15 @@ services = {"HTTP": [80], "SSL": [443], "HTTPS": [443], "FTP": [21], "SFTP": [22
 # Display filters that can be used in Tshark commands when processing .pcap files
 displayFilters = ["tcp", "udp"]
 
+# Client filters correlating CPE IDs to IP addresses
+clientFilters = {"101-u1" : "184.11.31.61", "101-u2" : "184.11.31.76", "101-u3" : "184.11.31.25", "101-u4" : "184.11.31.62",
+                 "101-u5" : "184.11.31.66", "101-u6" : "184.11.31.32", "101-u7" : "184.11.31.08", "101-u8" : "184.11.31.35",
+                 "101-u9" : "184.11.31.80", "102-u1" : "184.11.31.90", "102-u2" : "184.11.31.04", "102-u4" : "184.11.31.24",
+                 "102-u5" : "184.11.31.57", "102-u6" : "184.11.31.30", "102-u7" : "184.11.31.55", "103-u2" : "184.11.31.53",
+                 "103-u3" : "184.11.31.43", "103-u4" : "184.11.31.20", "104-u3" : "184.11.31.83", "104-u4" : "184.11.31.81",
+                 "105-u2" : "184.11.31.54", "105-u3" : "184.11.31.12", "106-u2" : "184.11.31.77", "106-u3" : "184.11.31.85",
+                 "106-u4" : "184.11.31.46", "106-u5" : "184.11.31.23"}
+
 # Fields that can be used in 'count' operations
 countFilters = ["frame.time_epoch", "frame.time_delta", "frame.len", "ip.src", "ip.dst", "eth.src", "eth.dst",
                 "tcp.len", "ip.proto", "ip.ttl", "tcp.srcport", "tcp.dstport", "udp.srcport", "udp.dstport",
@@ -89,3 +98,9 @@ servicesFields = ["services_tcpflows", "servicespackets_tcpflows", "services_udp
 # All fields associated with site analytics - used when performing calculations
 siteFilters = ["site_tcpflows", "siteSuccess_tcpflows", "siteFail_tcpflows", "sitePackets_tcpflows",
                "siteSuccessPackets_tcpflows", "siteFailPackets_tcpflows", "site_udpflows", "sitePackets_udpflows"]
+
+tcpURIFilters = ["site_tcpflows", "siteSuccess_tcpflows", "siteFail_tcpflows", "sitePackets_tcpflows",
+                 "siteSuccessPackets_tcpflows", "siteFailPackets_tcpflows", "siteBytes_tcpflows",
+                 "siteSuccessBytes_tcpflows", "siteFailBytes_tcpflows"]
+
+udpURIFilters = ["site_udpflows", "sitePackets_udpflows", "siteBytes_udpflows"]
